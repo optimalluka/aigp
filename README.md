@@ -15,13 +15,13 @@ The simulator provides no odometry and no gate positions — so the stack opens 
 
 Gate passage is confirmed via the race-status gate index, which also ends `COMMIT` early.
 
-**Playbook opening** (`config.py`) — the course is identical every run, so the opening is choreographed as a sequence of timed "pace notes" (body-frame velocity + pinned thrust), tuned run-over-run from flight logs. Each step advances on elapsed time *or* a gate-pass event, whichever comes first, and vision takes over the moment a real gate looms close — or when the script is exhausted. Playbook state resets automatically when a new race is detected (fixes a bug where a lingering process carried an exhausted script into later runs, silently reverting them to pure-vision flying).
+**Playbook opening** (`config.py`) — the course is identical every run, so the opening is designed as a sequence of timed "pace notes" (body-frame velocity + pinned thrust), tuned run-over-run from flight logs. Each step advances on elapsed time *or* a gate-pass event, whichever comes first, and vision takes over the moment a real gate looms close — or when the script is exhausted. Playbook state resets automatically when a new race is detected (fixes a bug where a lingering process carried an exhausted script into later runs, silently reverting them to pure-vision flying).
 
 **Course-line following** — when the course's guide line is visible, it takes priority over distant gate detections, preventing far-away gate blips from hijacking control into a wrong-gate, angled approach.
 
 **Telemetry & timing** (`mavlink_rx.py`, `vision_rx.py`, `timesync.py`, `state.py`) — pymavlink-based receivers for telemetry and camera frames, with time synchronization and a shared state object feeding the controller.
 
-**Diagnostics first** (`main.py --diagnose`) — before flying on any new simulator or course, a 30-second listen-only mode reports exactly which data streams are arriving (odometry? track data? race status? camera?). Zero-ambiguity setup beats debugging mid-flight.
+**Diagnostics first** (`main.py --diagnose`) — before flying on any new simulator or course, a 30-second listen-only mode reports exactly which data streams are arriving (odometry? track data? race status? camera?). 
 
 **Calibration probe** — an ACRO-mode routine that measures what the controller needs before racing: IMU axis conventions, liftoff/hover thrust (found by using the gate's motion in the camera as an improvised altimeter), and yaw sign.
 
